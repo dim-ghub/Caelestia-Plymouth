@@ -19,19 +19,14 @@ A premium, high-resolution Plymouth boot splash theme featuring a physically acc
 
 ### 1. On Arch Linux (Recommended)
 
-This project is fully packaged for Arch Linux. You can build and install it using standard Arch tools:
-
-1. **Build the package**:
-   In the root of the project repository, run:
-   ```bash
-   makepkg -s
-   ```
-   This will install all necessary build dependencies (like `librsvg` and `python-pillow`), run `generate_frames.py` to build the animation frames, and output the package archive `plymouth-theme-caelestia-1.1.1-1-any.pkg.tar.zst`.
+1. **Download or build the package**:
+   - **Prebuilt Package (Recommended)**: Download the latest `plymouth-theme-caelestia-*-any.pkg.tar.zst` from the [Releases](https://github.com/dim/caelestia-plymouth/releases) page.
+   - **From Source**: Alternatively, clone this repository and run `makepkg -s` in the root folder to compile the animation frames and generate the package.
 
 2. **Install the package**:
-   Install the generated package file using `pacman`:
+   Install the package archive using `pacman`:
    ```bash
-   sudo pacman -U plymouth-theme-caelestia-1.1.1-1-any.pkg.tar.zst
+   sudo pacman -U plymouth-theme-caelestia-*-any.pkg.tar.zst
    ```
 
 3. **Set the theme**:

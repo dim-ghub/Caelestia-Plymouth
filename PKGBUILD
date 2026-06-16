@@ -1,6 +1,6 @@
 # Maintainer: Dim <dim@example.com>
 pkgname=plymouth-theme-caelestia
-pkgver=1.0
+pkgver=1.1.0
 pkgrel=1
 pkgdesc="Google Pixel style boot splash using the Caelestia logo for Plymouth"
 arch=('any')

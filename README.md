@@ -17,7 +17,7 @@ A premium, high-resolution Plymouth boot splash theme inspired by the Google Pix
 
 - `caelestia-plymouth.plymouth` - Theme descriptor file.
 - `caelestia-plymouth.script` - Theme animation, alignment, and display script.
-- `generate_frames.py` - Python script that dynamically generates the 180 high-resolution transparent PNG frames from the SVG logo.
+- `generate_frames.py` - Python script that dynamically generates the 360 high-resolution transparent PNG frames from the SVG logo.
 - `image.svg` - Original vector source asset containing the Caelestia logo and stars.
 - `PKGBUILD` - Arch Linux packaging recipe that automates frame compilation and installation.
 - `README.md` - Project documentation.
@@ -35,7 +35,7 @@ This project is fully packaged for Arch Linux. You can build and install it usin
    ```bash
    makepkg -s
    ```
-   This will install all necessary build dependencies (like `librsvg` and `python-pillow`), run `generate_frames.py` to build the animation frames, and output the package archive `plymouth-theme-caelestia-1.0-1-any.pkg.tar.zst`.
+   This will install all necessary build dependencies (like `librsvg` and `python-pillow`), run `generate_frames.py` to build the animation frames, and output the package archive `plymouth-theme-caelestia-1.1.0-1-any.pkg.tar.zst`.
 
 2. **Install the package**:
    Install the generated package file using `pacman`:
@@ -61,7 +61,7 @@ If you are not using Arch Linux, you can generate the frames and copy them manua
    ```bash
    ./generate_frames.py
    ```
-   This will create a `caelestia-plymouth` directory containing all 180 frame PNGs.
+   This will create a `caelestia-plymouth` directory containing all 360 frame PNGs.
 
 3. **Copy theme folder**:
    Copy the `caelestia-plymouth` directory and the configuration files to your system Plymouth theme directory:

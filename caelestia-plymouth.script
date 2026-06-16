@@ -5,8 +5,8 @@
 Window.SetBackgroundTopColor(0.0, 0.0, 0.0);
 Window.SetBackgroundBottomColor(0.0, 0.0, 0.0);
 
-# Load all 180 frames
-for (i = 0; i < 180; i++) {
+# Load all 360 frames
+for (i = 0; i < 360; i++) {
   if (i < 10) {
     filename = "frame_00" + i + ".png";
   } else if (i < 100) {
@@ -26,9 +26,9 @@ frame_height = 512;
 
 # Track current frame
 current_frame = 0.0;
-frame_step = 0.55; # Tune this to control speed (0.5 to 0.6 is ideal for 30 FPS on 50Hz/60Hz refresh)
-intro_count = 120;
-loop_count = 60;
+frame_step = 1.0; # 1.0 frame step is ideal for 60 FPS on 60Hz displays
+intro_count = 240;
+loop_count = 120;
 
 fun refresh_callback() {
   local.frame_idx = Math.Int(current_frame);
@@ -43,7 +43,7 @@ fun refresh_callback() {
     sprite.SetImage(frames[local.frame_idx]);
     current_frame += frame_step;
   } else {
-    # Loop the progress bar animation (frames 120 to 179)
+    # Loop the progress bar animation (frames 240 to 359)
     loop_idx = intro_count + (Math.Int(current_frame - intro_count) % loop_count);
     sprite.SetImage(frames[loop_idx]);
     current_frame += frame_step;

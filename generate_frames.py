@@ -119,7 +119,7 @@ def spring_simulation(df_local):
     
     spring_max_velocity = 6.69
     
-    t = df_local / 30.0
+    t = df_local / 60.0
     pos = 1.0 - math.exp(-za * t) * (math.cos(wd * t) + r * math.sin(wd * t))
     vel = math.exp(-za * t) * (wn * wn / wd) * math.sin(wd * t)
     
@@ -274,13 +274,13 @@ def main():
     # Concentric Orbits
     R = [24.0 * 4.0, 48.0 * 4.0, 72.0 * 4.0, 96.0 * 4.0]
     planet_radii = [4.0 * 4.0, 5.0 * 4.0, 6.0 * 4.0, 7.0 * 4.0]
-    speeds = [3.0, 2.0, 1.0, -1.0] # Orbit cycles per 75 frames (negative is retrograde)
-    omega = [s * 2.0 * math.pi / 75.0 for s in speeds]
+    speeds = [3.0, 2.0, 1.0, -1.0] # Orbit cycles per 150 frames (negative is retrograde)
+    omega = [s * 2.0 * math.pi / 150.0 for s in speeds]
     init_angles = [0.0, math.pi / 2.0, math.pi, 3.0 * math.pi / 2.0]
     
     # Helper to calculate planet loop position at frame f (at 4x)
     def get_loop_pos(f, i):
-        f_local = f - 45
+        f_local = f - 90
         theta_i = init_angles[i] + f_local * omega[i]
         d_i = R[i]
         x = logo_center_x + d_i * math.cos(theta_i)
@@ -320,29 +320,29 @@ def main():
     shape2_points = get_pill_points(64.0, 32.0, 180)     # Pill
     shapes_list = [shape0_points, shape1_points, shape2_points]
 
-    print("Generating 180 frames...")
+    print("Generating 360 frames...")
     
-    for f in range(180):
+    for f in range(360):
         # Create transparent canvas (2048x2048)
         frame = Image.new("RGBA", (final_canvas_size, final_canvas_size), (0, 0, 0, 0))
         draw = ImageDraw.Draw(frame)
         
-        if f < 45:
-            # --- PHASE 1: INTRO (0-44) ---
+        if f < 90:
+            # --- PHASE 1: INTRO (0-89) ---
             # Central Star Sun fades in (Material Design "Sunny" 8-pointed shape)
-            sun_t = min(1.0, f / 15.0)
+            sun_t = min(1.0, f / 30.0)
             sun_scale = ease_out_cubic(sun_t)
             sun_alpha = int(255 * sun_scale)
             if sun_alpha > 0:
-                sun_rot = f * (2.0 * math.pi / 180.0)
+                sun_rot = f * (2.0 * math.pi / 360.0)
                 sun_pts = get_star_points(8, 32.0 * sun_scale, 25.0 * sun_scale, n=32, rotation=sun_rot)
                 sun_pts_placed = [(pt[0] + logo_center_x, pt[1] + logo_center_y) for pt in sun_pts]
                 draw.polygon(sun_pts_placed, fill=(255, 213, 79, sun_alpha))
                 
             for i in range(4):
-                f_start = i * 5
+                f_start = i * 10
                 if f >= f_start:
-                    t = min(1.0, (f - f_start) / 15.0)
+                    t = min(1.0, (f - f_start) / 30.0)
                     ease = ease_out_cubic(t)
                     r = planet_radii[i] * ease
                     
@@ -351,10 +351,10 @@ def main():
                     y = logo_center_y + (target_y - logo_center_y) * ease
                     draw.ellipse([x - r, y - r, x + r, y + r], fill=dot_colors[i])
                     
-        elif f < 60:
-            # --- PHASE 2: KEPLERIAN DANCE LOOP (45-119) ---
+        elif f < 120:
+            # --- PHASE 2: KEPLERIAN DANCE LOOP (90-119) ---
             # Central Star Sun (Material Design "Sunny" shape)
-            sun_rot = f * (2.0 * math.pi / 180.0)
+            sun_rot = f * (2.0 * math.pi / 360.0)
             sun_pts = get_star_points(8, 32.0, 25.0, n=32, rotation=sun_rot)
             sun_pts_placed = [(pt[0] + logo_center_x, pt[1] + logo_center_y) for pt in sun_pts]
             draw.polygon(sun_pts_placed, fill=(255, 213, 79, 255))
@@ -364,22 +364,22 @@ def main():
                 r = planet_radii[i]
                 draw.ellipse([x - r, y - r, x + r, y + r], fill=dot_colors[i])
                 
-        elif f < 75:
-            # --- PHASE 3: MERGE (60-74) ---
-            f_merge = f - 60
-            t = f_merge / 15.0
+        elif f < 150:
+            # --- PHASE 3: MERGE (120-149) ---
+            f_merge = f - 120
+            t = f_merge / 30.0
             factor = 1.0 - t
             
             # Central Star Sun fades out
             sun_alpha = int(255 * factor)
             if sun_alpha > 0:
-                sun_rot = f * (2.0 * math.pi / 180.0)
+                sun_rot = f * (2.0 * math.pi / 360.0)
                 sun_pts = get_star_points(8, 32.0 * factor, 25.0 * factor, n=32, rotation=sun_rot)
                 sun_pts_placed = [(pt[0] + logo_center_x, pt[1] + logo_center_y) for pt in sun_pts]
                 draw.polygon(sun_pts_placed, fill=(255, 213, 79, sun_alpha))
                 
             for i in range(4):
-                theta_i = init_angles[i] + (15 + f_merge) * omega[i]
+                theta_i = init_angles[i] + (30 + f_merge) * omega[i]
                 d_i = R[i] * factor
                 x = logo_center_x + d_i * math.cos(theta_i)
                 y = logo_center_y + d_i * math.sin(theta_i)
@@ -397,14 +397,14 @@ def main():
                 r = planet_radii[i] * factor if factor > 0 else 0
                 if r > 0:
                     draw.ellipse([x - r, y - r, x + r, y + r], fill=color)
-                
-        elif f < 120:
-            # --- PHASE 4: MORPH / LOGO INTRO (135-179) ---
-            f_morph = f - 75
+                    
+        elif f < 240:
+            # --- PHASE 4: MORPH / LOGO INTRO (150-239) ---
+            f_morph = f - 150
             
             # Central dot expands and fades out
-            if f_morph < 15:
-                t_dot = f_morph / 15.0
+            if f_morph < 30:
+                t_dot = f_morph / 30.0
                 ease_dot = 1.0 - (1.0 - t_dot) ** 2
                 circle_r = (16.0 + 32.0 * ease_dot) * 4.0
                 circle_opacity = max(0.0, 1.0 - t_dot)
@@ -427,41 +427,41 @@ def main():
                     
             # Compute logo body transform properties
             # Rotation
-            if f_morph < 18:
-                rot = 750.0 * ease_out_cubic(f_morph / 18.0)
-            elif f_morph < 23:
-                rot = 750.0 + (710.0 - 750.0) * ease_in_out_quad((f_morph - 18) / 5.0)
-            elif f_morph < 29:
-                rot = 710.0 + (725.0 - 710.0) * ease_in_out_quad((f_morph - 23) / 6.0)
-            elif f_morph < 34:
-                rot = 725.0 + (720.0 - 725.0) * ease_out_quad((f_morph - 29) / 5.0)
+            if f_morph < 36:
+                rot = 750.0 * ease_out_cubic(f_morph / 36.0)
+            elif f_morph < 46:
+                rot = 750.0 + (710.0 - 750.0) * ease_in_out_quad((f_morph - 36) / 10.0)
+            elif f_morph < 58:
+                rot = 710.0 + (725.0 - 710.0) * ease_in_out_quad((f_morph - 46) / 12.0)
+            elif f_morph < 68:
+                rot = 725.0 + (720.0 - 725.0) * ease_out_quad((f_morph - 58) / 10.0)
             else:
                 rot = 720.0
                 
             # Scale
-            if f_morph < 18:
-                sc = 1.08 * ease_out_cubic(f_morph / 18.0)
-            elif f_morph < 22:
-                sc = 1.08 + (0.96 - 1.08) * ease_in_out_quad((f_morph - 18) / 4.0)
-            elif f_morph < 27:
-                sc = 0.96 + (1.00 - 0.96) * ease_out_back((f_morph - 22) / 5.0, 1.05)
+            if f_morph < 36:
+                sc = 1.08 * ease_out_cubic(f_morph / 36.0)
+            elif f_morph < 44:
+                sc = 1.08 + (0.96 - 1.08) * ease_in_out_quad((f_morph - 36) / 8.0)
+            elif f_morph < 54:
+                sc = 0.96 + (1.00 - 0.96) * ease_out_back((f_morph - 44) / 10.0, 1.05)
             else:
                 sc = 1.0
                 
             # Opacity
-            if f_morph < 11:
-                op = ease_in_out_quad(f_morph / 11.0)
+            if f_morph < 22:
+                op = ease_in_out_quad(f_morph / 22.0)
             else:
                 op = 1.0
                 
             # Blur (scaled by 4.0)
-            if f_morph < 16:
-                bl = 240.0 * (1.0 - ease_out_cubic(f_morph / 16.0))
+            if f_morph < 32:
+                bl = 240.0 * (1.0 - ease_out_cubic(f_morph / 32.0))
             else:
                 bl = 0.0
                 
             # Compute star transform properties
-            star_delays = [20, 23, 25]
+            star_delays = [40, 46, 50]
             star_opacities = [0.0, 0.0, 0.0]
             star_scales = [0.0, 0.0, 0.0]
             
@@ -469,15 +469,15 @@ def main():
                 f_star = f_morph - star_delays[j]
                 if f_star >= 0:
                     # Opacity
-                    if f_star < 13:
-                        star_opacities[j] = ease_in_out_quad(f_star / 13.0)
+                    if f_star < 26:
+                        star_opacities[j] = ease_in_out_quad(f_star / 26.0)
                     else:
                         star_opacities[j] = 1.0
                     # Scale
-                    if f_star < 9:
-                        star_scales[j] = 1.08 * ease_out_quad(f_star / 9.0)
-                    elif f_star < 16:
-                        star_scales[j] = 1.08 + (1.0 - 1.08) * ease_in_out_quad((f_star - 9) / 7.0)
+                    if f_star < 18:
+                        star_scales[j] = 1.08 * ease_out_quad(f_star / 18.0)
+                    elif f_star < 32:
+                        star_scales[j] = 1.08 + (1.0 - 1.08) * ease_in_out_quad((f_star - 18) / 14.0)
                     else:
                         star_scales[j] = 1.0
                         
@@ -499,18 +499,18 @@ def main():
             frame.paste(logo_transformed, (paste_x, paste_y), logo_transformed)
             
         else:
-            # --- PHASE 5: LOGO & M3 LOADER LOOP (180-239) ---
-            f_loop = f - 120
+            # --- PHASE 5: LOGO & M3 LOADER LOOP (240-359) ---
+            f_loop = f - 240
             
-            # Stars float and scale breathing offsets (synchronized to 60-frame loop)
-            s1_dy = -2.5 * math.sin(f_loop * (2 * math.pi / 60.0))
-            s1_sc = 1.0 + 0.04 * math.sin(f_loop * (2 * math.pi / 60.0))
+            # Stars float and scale breathing offsets (synchronized to 120-frame loop)
+            s1_dy = -2.5 * math.sin(f_loop * (2 * math.pi / 120.0))
+            s1_sc = 1.0 + 0.04 * math.sin(f_loop * (2 * math.pi / 120.0))
             
-            s2_dy = 2.5 * math.sin(f_loop * (2 * math.pi / 60.0))
-            s2_sc = 1.0 + 0.06 * math.sin(f_loop * (2 * math.pi / 60.0))
+            s2_dy = 2.5 * math.sin(f_loop * (2 * math.pi / 120.0))
+            s2_sc = 1.0 + 0.06 * math.sin(f_loop * (2 * math.pi / 120.0))
             
-            s3_dy = -2.5 * math.sin(f_loop * (4 * math.pi / 60.0))
-            s3_sc = 1.0 + 0.04 * math.sin(f_loop * (4 * math.pi / 60.0))
+            s3_dy = -2.5 * math.sin(f_loop * (4 * math.pi / 120.0))
+            s3_sc = 1.0 + 0.04 * math.sin(f_loop * (4 * math.pi / 120.0))
             
             # Composite stars on top of body (2048x2048)
             combined = Image.new("RGBA", (canvas_w, canvas_h), (0, 0, 0, 0))
@@ -539,8 +539,8 @@ def main():
             frame.paste(combined, (paste_x, paste_y), combined)
             
             # --- M3 SQUIGGLY LOADING CIRCLE ---
-            cycle_idx = f_loop // 20
-            df_local = f_loop % 20
+            cycle_idx = f_loop // 40
+            df_local = f_loop % 40
             
             from_idx = cycle_idx
             to_idx = (cycle_idx + 1) % 3
@@ -564,7 +564,7 @@ def main():
             highres_draw.polygon(scaled_points, fill=(159, 238, 231, 255)) # vibrant neon teal #9feee7
             
             # Rotate loader on high resolution canvas to keep edges perfectly sharp
-            cRot = f_loop * 6.0
+            cRot = f_loop * 3.0
             lRot = cycle_idx * 120.0
             rot = cRot + lRot + rot_morph
             highres_rotated = highres_img.rotate(-rot, resample=Image.Resampling.BICUBIC)

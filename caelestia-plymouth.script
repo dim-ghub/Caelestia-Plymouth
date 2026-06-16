@@ -30,7 +30,7 @@ intro_count = 120;
 loop_count = 60;
 
 fun refresh_callback() {
-  if (!global.t_start) {
+  if (global.t_start == null) {
     global.t_start = Plymouth.GetTime();
   }
   

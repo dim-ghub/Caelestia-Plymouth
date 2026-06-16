@@ -25,25 +25,30 @@ frame_width = 512;
 frame_height = 512;
 
 # Track current frame
-current_frame = 0;
+global.t_start = null;
 intro_count = 120;
 loop_count = 60;
 
 fun refresh_callback() {
+  if (!global.t_start) {
+    global.t_start = Plymouth.GetTime();
+  }
+  
+  local.elapsed = Plymouth.GetTime() - global.t_start;
+  local.current_frame = Math.Int(local.elapsed * 30.0);
+
   # Dynamically center the sprite to handle early boot resolution transitions
   window_width = Window.GetWidth();
   window_height = Window.GetHeight();
   sprite.SetX(window_width / 2 - frame_width / 2);
   sprite.SetY(window_height / 2 - frame_height / 2);
 
-  if (current_frame < intro_count) {
-    sprite.SetImage(frames[current_frame]);
-    current_frame++;
+  if (local.current_frame < intro_count) {
+    sprite.SetImage(frames[local.current_frame]);
   } else {
     # Loop the progress bar animation (frames 120 to 179)
-    loop_idx = intro_count + ((current_frame - intro_count) % loop_count);
+    loop_idx = intro_count + ((local.current_frame - intro_count) % loop_count);
     sprite.SetImage(frames[loop_idx]);
-    current_frame++;
   }
 }
 

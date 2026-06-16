@@ -256,12 +256,12 @@ def main():
         if os.path.exists(png):
             os.remove(png)
             
-    # Vibrant Planet Colors
+    # Physically Accurate Inner Solar System Colors (Vibrant variants)
     dot_colors = [
-        (87, 205, 218, 255),  # Vibrant Blue
-        (250, 116, 111, 255),  # Vibrant Red
-        (211, 250, 232, 255),  # Bright Yellow-Green
-        (141, 241, 223, 255)   # Vibrant Green
+        (144, 164, 174, 255),  # Mercury: Slate Gray
+        (255, 224, 130, 255),  # Venus: Creamy Yellow
+        (41, 182, 246, 255),   # Earth: Ocean Blue
+        (255, 112, 67, 255)    # Mars: Terracotta Rusty Red
     ]
     
     merge_target_color = (255, 255, 255, 255) # pure white merge target
@@ -271,10 +271,17 @@ def main():
     logo_center_x, logo_center_y = 1024, 800
     progress_bar_y = 1680
     
-    # Concentric Orbits
-    R = [24.0 * 4.0, 48.0 * 4.0, 72.0 * 4.0, 96.0 * 4.0]
-    planet_radii = [4.0 * 4.0, 5.0 * 4.0, 6.0 * 4.0, 7.0 * 4.0]
-    speeds = [3.0, 2.0, 1.0, -1.0] # Orbit cycles per 150 frames (negative is retrograde)
+    # Concentric Orbits (Relative semi-major axes: 0.39, 0.72, 1.00, 1.52)
+    # Earth base orbit = 72.0 * 4.0
+    R = [28.0 * 4.0, 52.0 * 4.0, 72.0 * 4.0, 109.0 * 4.0]
+    
+    # Planet Radii (Relative physical sizes: 0.38, 0.95, 1.00, 0.53)
+    # Earth base radius = 6.0 * 4.0
+    planet_radii = [2.28 * 4.0, 5.7 * 4.0, 6.0 * 4.0, 3.18 * 4.0]
+    
+    # Keplerian Orbital Speeds (Relative cycles: 4.15, 1.62, 1.00, 0.53)
+    # Earth base speed = 0.75 cycles per 150 frames (slowed down by 50%)
+    speeds = [3.1125, 1.215, 0.75, 0.3975] 
     omega = [s * 2.0 * math.pi / 150.0 for s in speeds]
     init_angles = [0.0, math.pi / 2.0, math.pi, 3.0 * math.pi / 2.0]
     

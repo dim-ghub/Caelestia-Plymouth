@@ -1,17 +1,8 @@
 # Caelestia Plymouth Boot Animation
 
-A premium, high-resolution Plymouth boot splash theme inspired by the Google Pixel boot animation, customized with the Caelestia crescent and stars logo.
+A premium, high-resolution Plymouth boot splash theme featuring a physically accurate inner solar system and custom Caelestia logo morph.
 
-## Features
-
-- **4x Super-Sampled Anti-Aliasing**: All animation transforms (scaling, rotations, blurs) are computed natively at a massive **2048x2048** resolution, then downsampled to **512x512** using high-quality LANCZOS interpolation. This delivers perfectly smooth vector curves without any pixelation or jaggies.
-- **Material Design "Sunny" Sun Shape**: A soft, flower-like 8-pointed star in vibrant Material yellow (`#ffd54f`) that slowly rotates at the center of the orbit paths.
-- **Planetary Keplerian Intro**: Four colored planets sequentially fade in and revolve around the sun at relative Keplerian speeds before spiraling in and merging.
-- **SDDM Locklike Morph**: The merged core expands and spins out to form the Caelestia logo, replicating the premium 720° overshoot rotation and scale bounce from the SDDM theme.
-- **Material 3 Expressive Loading Circle**: A squiggly Material Design 3 loading shape (`SoftBurst` -> `Sunny` -> `Pill`) morphs dynamically on underdamped spring physics at the bottom.
-- **Pitch Black Background**: Set to `#000000` for deep contrast.
-
----
+![Boot Splash Animation Preview](preview.mp4)
 
 ## File Structure
 

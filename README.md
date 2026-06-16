@@ -2,7 +2,7 @@
 
 A premium, high-resolution Plymouth boot splash theme featuring a physically accurate inner solar system and custom Caelestia logo morph.
 
-![Boot Splash Animation Preview](preview.mp4)
+![Boot Splash Animation Preview](preview.gif)
 
 ## File Structure
 

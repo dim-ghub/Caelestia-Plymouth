@@ -1,0 +1,11 @@
+# Generated Plymouth frames
+caelestia-plymouth/frame_*.png
+
+# Packaging outputs and temporaries
+pkg/
+src/
+plymouth-theme-caelestia-*.pkg.tar.zst
+
+# Local preview and backups
+preview.mp4
+temp_*

@@ -1,0 +1,93 @@
+# caelestia-plymouth.script
+# Recreated Google Pixel Boot animation with Caelestia logo (V2)
+
+# Set background color
+Window.SetBackgroundHexColor(0x000000);
+
+# Load all 180 frames
+for (i = 0; i < 180; i++) {
+  if (i < 10) {
+    filename = "frame_00" + i + ".png";
+  } else if (i < 100) {
+    filename = "frame_0" + i + ".png";
+  } else {
+    filename = "frame_" + i + ".png";
+  }
+  frames[i] = Image(filename);
+}
+
+# Create a sprite to display the frames
+sprite = Sprite();
+
+# Constants (V2 Canvas Size)
+frame_width = 512;
+frame_height = 512;
+
+# Track current frame
+current_frame = 0;
+intro_count = 120;
+loop_count = 60;
+
+fun refresh_callback() {
+  # Dynamically center the sprite to handle early boot resolution transitions
+  window_width = Window.GetWidth();
+  window_height = Window.GetHeight();
+  sprite.SetX(window_width / 2 - frame_width / 2);
+  sprite.SetY(window_height / 2 - frame_height / 2);
+
+  if (current_frame < intro_count) {
+    sprite.SetImage(frames[current_frame]);
+    current_frame++;
+  } else {
+    # Loop the progress bar animation (frames 120 to 179)
+    loop_idx = intro_count + ((current_frame - intro_count) % loop_count);
+    sprite.SetImage(frames[loop_idx]);
+    current_frame++;
+  }
+}
+
+Plymouth.SetRefreshFunction(refresh_callback);
+
+# --- Password Prompt & Messages Support ---
+global.status = "normal";
+
+fun display_message_callback(text) {
+  if (text) {
+    # Text color dce8e6 (onBackground) normalized: R=0.86, G=0.91, B=0.90
+    local.message_image = Image.Text(text, 0.86, 0.91, 0.90);
+    if (!global.message_sprite) {
+      global.message_sprite = Sprite();
+    }
+    global.message_sprite.SetImage(message_image);
+    global.message_sprite.SetX(Window.GetWidth() / 2 - message_image.GetWidth() / 2);
+    global.message_sprite.SetY(Window.GetHeight() * 0.85);
+    global.message_sprite.SetOpacity(1);
+  } else {
+    if (global.message_sprite) {
+      global.message_sprite.SetOpacity(0);
+    }
+  }
+}
+
+Plymouth.SetMessageFunction(display_message_callback);
+
+fun display_password_callback(prompt, bullets) {
+  global.status = "password";
+  local.bullet_str = "";
+  for (i = 0; i < bullets; i++) {
+    local.bullet_str += "*";
+  }
+  local.full_text = prompt + " " + local.bullet_str;
+  display_message_callback(local.full_text);
+}
+
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+
+fun display_normal_callback() {
+  global.status = "normal";
+  if (global.message_sprite) {
+    global.message_sprite.SetOpacity(0);
+  }
+}
+
+Plymouth.SetDisplayNormalFunction(display_normal_callback);

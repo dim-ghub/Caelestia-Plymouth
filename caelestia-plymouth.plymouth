@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Caelestia Plymouth
+Description=Google Pixel style boot splash using the Caelestia logo.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/caelestia-plymouth
+ScriptFile=/usr/share/plymouth/themes/caelestia-plymouth/caelestia-plymouth.script

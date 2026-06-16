@@ -26,7 +26,16 @@ frame_height = 512;
 
 # Track current frame
 current_frame = 0.0;
-frame_step = 1.0; # 1.0 frame step is ideal for 60 FPS on 60Hz displays
+
+# Animation Speed Configuration
+# Since Plymouth lacks a system time API, speed is controlled by frame_step per display refresh.
+# - For 60Hz displays (60 FPS): frame_step = 1.0 (6.0s duration)
+# - For 90Hz displays (90 FPS): frame_step = 0.67 (6.0s duration) - Recommended default for high-refresh boot screens
+# - For 120Hz displays (120 FPS): frame_step = 0.50 (6.0s duration)
+# - For 144Hz displays (144 FPS): frame_step = 0.42 (6.0s duration)
+# Adjust this value below to match your monitor's refresh rate/playback speed:
+frame_step = 0.67;
+
 intro_count = 240;
 loop_count = 120;
 

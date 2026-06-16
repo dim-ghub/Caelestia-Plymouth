@@ -37,6 +37,16 @@ fun refresh_callback() {
   local.elapsed = Plymouth.GetTime() - global.t_start;
   local.current_frame = Math.Int(local.elapsed * 30.0);
 
+  # DEBUGGING: Render values on-screen
+  if (global.debug_sprite == null) {
+    global.debug_sprite = Sprite();
+    global.debug_sprite.SetX(50);
+    global.debug_sprite.SetY(50);
+    global.debug_sprite.SetOpacity(1);
+  }
+  local.debug_txt = Image.Text("Frame: " + local.current_frame + " | Time: " + local.elapsed + " | Start: " + global.t_start, 1, 1, 1);
+  global.debug_sprite.SetImage(local.debug_txt);
+
   # Dynamically center the sprite to handle early boot resolution transitions
   window_width = Window.GetWidth();
   window_height = Window.GetHeight();

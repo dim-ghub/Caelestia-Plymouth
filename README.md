@@ -35,12 +35,12 @@ This project is fully packaged for Arch Linux. You can build and install it usin
    ```bash
    makepkg -s
    ```
-   This will install all necessary build dependencies (like `librsvg` and `python-pillow`), run `generate_frames.py` to build the animation frames, and output the package archive `plymouth-theme-caelestia-1.1.0-1-any.pkg.tar.zst`.
+   This will install all necessary build dependencies (like `librsvg` and `python-pillow`), run `generate_frames.py` to build the animation frames, and output the package archive `plymouth-theme-caelestia-1.1.1-1-any.pkg.tar.zst`.
 
 2. **Install the package**:
    Install the generated package file using `pacman`:
    ```bash
-   sudo pacman -U plymouth-theme-caelestia-1.0-1-any.pkg.tar.zst
+   sudo pacman -U plymouth-theme-caelestia-1.1.1-1-any.pkg.tar.zst
    ```
 
 3. **Set the theme**:
